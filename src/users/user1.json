@@ -1,0 +1,12 @@
+[
+  {
+    "_id": 1234,
+    "mastery": 1,
+    "drillReps": 1
+  },
+  {
+    "_id": 5678,
+    "mastery": 10,
+    "drillReps": 10
+  }
+]
