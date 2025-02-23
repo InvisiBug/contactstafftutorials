@@ -1,0 +1,14 @@
+[
+  {
+    "_id": 1,
+    "mastery": 2,
+    "drillReps": 2,
+    "status": "learned"
+  },
+  {
+    "_id": 2,
+    "mastery": 20,
+    "drillReps": 20,
+    "status": "up next"
+  }
+]
