@@ -1,28 +1,43 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import "./App.css";
-import { loadMoves, loadUserData, enrichMoves } from "./utils";
+import {
+  loadMoves,
+  loadUserData,
+  enrichMoves,
+  loadGifs,
+  myToLowerCase,
+  camelName,
+} from "./lib/utils";
+import { EnrichedMove } from "./lib/types";
+import { Card, CardHeader, CardTitle, CardContent } from "./lib/ui/card";
 
 function App() {
-  const [userData, setUserData] = useState<Data[]>();
-  // const [moves, setMoves] = useState<Move[]>();
-  const [mergedData, setMergedData] = useState<any[]>();
+  const [userEnrichedMoves, setUserEnrichedMoves] = useState(
+    [] as EnrichedMove[]
+  );
 
-  type Data = {
-    _id: number;
-    mastery: number;
-    drillReps: number;
-  };
+  const [gifs, setGifs] = useState([] as string[]);
 
   useEffect(() => {
     const loadData = async () => {
       const userData = await loadUserData();
       const moves = await loadMoves();
 
+      const gifs: string[] = await loadGifs();
+
+      console.log(gifs[0].toLowerCase());
+
+      const name = "Half Steve";
+      console.log(camelName(name));
+
+      console.log(gifs.find((gif) => gif.includes(myToLowerCase(name))));
+
       console.log("userData", userData);
       console.log("moves", moves);
 
-      console.log(enrichMoves({ moves, userData }));
+      setGifs(gifs);
+
+      console.log(setUserEnrichedMoves(enrichMoves({ moves, userData })));
     };
 
     loadData();
@@ -30,43 +45,49 @@ function App() {
 
   return (
     <>
-      <h1>User Saved Moves</h1>
-      <div>
-        {userData?.map((move) => (
-          <div key={move._id}>
-            <p>ID: {move._id}</p>
-            <p>Mastery: {move.mastery}</p>
-            <p>Drill Reps: {move.drillReps}</p>
-          </div>
-        ))}
-      </div>
+      <div
+        className={
+          "w-screen h-screen bg-gray-500 flex align-middle border-amber-400 border-2"
+        }
+      >
+        <div className="w-auto border-2 border-red-400 m-auto p-4 flex flex-row justify-center items-center gap-10">
+          {userEnrichedMoves.map((move) => {
+            const {
+              name,
+              mastery,
+              drillReps,
+              status,
+              family,
+              difficulty,
+              firstEncountered,
+            } = move;
 
-      {/* <h1>All Moves</h1>
-      <div>
-        {moves?.map((move) => (
-          <div key={move._id}>
-            <p>ID: {move._id}</p>
-            <p>Name: {move.name}</p>
-            <p>Family: {move.family}</p>
-            <p>Difficulty: {move.difficulty}</p>
-            <p>First Encountered: {move.firstEncountered}</p>
-          </div>
-        ))}
-      </div> */}
-
-      <h1>Merged Data</h1>
-      <div>
-        {mergedData?.map((data) => (
-          <div key={data._id}>
-            <p>ID: {data._id}</p>
-            <p>Mastery: {data.mastery}</p>
-            <p>Drill Reps: {data.drillReps}</p>
-            <p>Name: {data.name}</p>
-            <p>Family: {data.family}</p>
-            <p>Difficulty: {data.difficulty}</p>
-            <p>First Encountered: {data.firstEncountered}</p>
-          </div>
-        ))}
+            return (
+              <Card>
+                <CardHeader>
+                  <CardTitle>{name}</CardTitle>
+                  <CardContent>
+                    <ul>
+                      <li>Family: {family}</li>
+                      <li>Difficulty: {difficulty}</li>
+                      <li>Difficulty: {difficulty}</li>
+                      <li>Encountered: {firstEncountered}</li>
+                      <li>-------</li>
+                      <p className={"text-blue-500"}>User training data</p>
+                      <li>Status: {status}</li>
+                      <li>Mastery: {mastery}</li>
+                      <li>Reps: {drillReps}</li>
+                      <img
+                        src={gifs.find((gif) => gif.includes(camelName(name)))}
+                        className={"w-50 h-30"}
+                      ></img>
+                    </ul>
+                  </CardContent>
+                </CardHeader>
+              </Card>
+            );
+          })}
+        </div>
       </div>
     </>
   );
