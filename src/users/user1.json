@@ -1,12 +1,14 @@
 [
   {
-    "_id": 1234,
+    "_id": 1,
     "mastery": 1,
-    "drillReps": 1
+    "drillReps": 1,
+    "status": "learned"
   },
   {
-    "_id": 5678,
+    "_id": 2,
     "mastery": 10,
-    "drillReps": 10
+    "drillReps": 10,
+    "status": "learning"
   }
 ]
