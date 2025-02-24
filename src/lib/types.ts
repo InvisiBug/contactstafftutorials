@@ -1,4 +1,4 @@
-export type EnrichedMoved = Move & UserData;
+export type EnrichedMove = Move & UserData;
 
 export type Moves = Move[];
 
@@ -14,6 +14,7 @@ export type UserMoves = UserData[];
 
 type UserData = {
   _id: number;
-  mastery: number;
-  drillReps: number;
+  mastery?: number;
+  drillReps?: number;
+  status?: string;
 };

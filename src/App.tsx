@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-// import { AppSidebar } from "@/components/app-sidebar"
+import { useEffect, useState } from "react";
+import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,170 +14,130 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import "./App.css";
-import { loadMoves, loadUserData, enrichMoves } from "./utils";
+import {
+  loadMoves,
+  loadUserData,
+  enrichMoves,
+  loadGifs,
+  myToLowerCase,
+  camelName,
+} from "./lib/utils";
+import { EnrichedMove } from "./lib/types";
+import { Card, CardHeader, CardTitle, CardContent } from "./lib/ui/card";
 
 function App() {
-  const [userData, setUserData] = useState<Data[]>();
-  // const [moves, setMoves] = useState<Move[]>();
-  const [mergedData, setMergedData] = useState<any[]>();
+  const [userEnrichedMoves, setUserEnrichedMoves] = useState(
+    [] as EnrichedMove[]
+  );
 
-  type Data = {
-    _id: number;
-    mastery: number;
-    drillReps: number;
-  };
+  const [gifs, setGifs] = useState([] as string[]);
 
   useEffect(() => {
-    // const loadData = async () => {
-    //   const moves: Move[] = [];
-
-    //   const modules = import.meta.glob("./moves/steve/*.json", {
-    //     import: "default",
-    //   });
-
-    //   // if (!modules) return;
-
-    //   console.log("🚀 ~ loadData ~ modules:", modules);
-
-    //   for (const path in modules) {
-    //     modules[path]().then((mod) => {
-    //       const move = mod as Move;
-    //       moves.push(move);
-    //     });
-    //   }
-    //   console.log("🚀 ~ modules[path] ~ moves:", moves);
-
-    //   // const moves = await readAllMoves();
-
-    //   setUserData(userData);
-    //   // setMoves(moves);
-
-    //   console.log("hsaksjhdksjh");
-
-    //   // moves.map((move) => {
-    //   //   console.log("🚀 ~ move:", move);
-    //   // });
-
-    //   // const enrichedMoves = moves.map((move) => {
-    //   //   // Find the move with the same id as the current user move
-    //   //   // add users data and return
-    //   //   console.log("🚀 ~ dasdasdsda ~ move:", move);
-    //   //   const usersMoves = userData.find((m) => m._id === move._id);
-    //   //   return {
-    //   //     ...move,
-    //   //     ...usersMoves,
-    //   //   };
-    //   // });
-
-    //   // setMergedData(enrichedMoves);
-
-    //   // console.log("🚀 ~ loadData ~ enriched moves:", enrichedMoves);
-    //   // console.log("🚀 ~ loadData ~ userSaved:", userSaved);
-    // };
-
     const loadData = async () => {
       const userData = await loadUserData();
       const moves = await loadMoves();
 
+      const gifs: string[] = await loadGifs();
+
+      console.log(gifs[0].toLowerCase());
+
+      const name = "Half Steve";
+      console.log(camelName(name));
+
+      console.log(gifs.find((gif) => gif.includes(myToLowerCase(name))));
+
       console.log("userData", userData);
       console.log("moves", moves);
 
-      console.log(enrichMoves({ moves, userData }));
+      setGifs(gifs);
+
+      console.log(setUserEnrichedMoves(enrichMoves({ moves, userData })));
     };
 
     loadData();
   }, []);
 
   return (
-
-    
     <>
       <SidebarProvider>
-        {/* <AppSidebar /> */}
-        <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-            <div className="flex items-center gap-2 px-4">
-              <SidebarTrigger className="-ml-1" />
-              <Separator orientation="vertical" className="mr-2 h-4" />
-              <Breadcrumb>
-                <BreadcrumbList>
-                  <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="#">
-                      Building Your Application
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator className="hidden md:block" />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
-            </div>
-          </header>
-          <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-            <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-              <div className="aspect-video rounded-xl bg-muted/50">
-              <h1>User Saved Moves</h1>
-                <div>
-                  {userData?.map((move) => (
-                    <div key={move._id}>
-                      <p>ID: {move._id}</p>
-                      <p>Mastery: {move.mastery}</p>
-                      <p>Drill Reps: {move.drillReps}</p>
-                    </div>
-                  ))}
-                </div>
-                
-                {/* <h1>All Moves</h1>
-                <div>
-                  {moves?.map((move) => (
-                    <div key={move._id}>
-                      <p>ID: {move._id}</p>
-                      <p>Name: {move.name}</p>
-                      <p>Family: {move.family}</p>
-                      <p>Difficulty: {move.difficulty}</p>
-                      <p>First Encountered: {move.firstEncountered}</p>
-                    </div>
-                  ))}
-                </div> */}
-
-                <h1>Merged Data</h1>
-                <div>
-                  {mergedData?.map((data) => (
-                    <div key={data._id}>
-                      <p>ID: {data._id}</p>
-                      <p>Mastery: {data.mastery}</p>
-                      <p>Drill Reps: {data.drillReps}</p>
-                      <p>Name: {data.name}</p>
-                      <p>Family: {data.family}</p>
-                      <p>Difficulty: {data.difficulty}</p>
-                      <p>First Encountered: {data.firstEncountered}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="aspect-video rounded-xl bg-muted/50" />
-              <div className="aspect-video rounded-xl bg-muted/50" />
-            </div>
-            <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">
+                    Building Your Application
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
           </div>
-        </SidebarInset>
-      </SidebarProvider>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <div
+        className={
+          "w-screen h-screen bg-gray-500 flex align-middle border-amber-400 border-2"
+        }
+      >
+        <div className="w-auto border-2 border-red-400 m-auto p-4 flex flex-row justify-center items-center gap-10 ">
+          {userEnrichedMoves.map((move) => {
+            const {
+              name,
+              mastery,
+              drillReps,
+              status,
+              family,
+              difficulty,
+              firstEncountered,
+            } = move;
 
+            return (
+              <Card className={"shadow-gray-600  bg-grey-400 shadow-md"}>
+                <CardHeader>
+                  <CardTitle>{name}</CardTitle>
+                  <CardContent>
+                    <ul>
+                      <li>Family: {family}</li>
+                      <li>Difficulty: {difficulty}</li>
+                      <li>Difficulty: {difficulty}</li>
+                      <li>Encountered: {firstEncountered}</li>
+                      <li>-------</li>
+                      <p className={"text-blue-500"}>User training data</p>
+                      <li>Status: {status}</li>
+                      <li>Mastery: {mastery}</li>
+                      <li>Reps: {drillReps}</li>
+                      <img
+                        src={gifs.find((gif) => gif.includes(camelName(name)))}
+                        className={"w-50 h-30 rounded-2xl"}
+                      ></img>
+                    </ul>
+                  </CardContent>
+                </CardHeader>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+            
+            <div className="aspect-video rounded-xl bg-muted/50" />
+            <div className="aspect-video rounded-xl bg-muted/50" />
+            <div className="aspect-video rounded-xl bg-muted/50" />
+          </div>
+          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
     </>
   );
 }
 
 export default App;
-
-interface Test {
-  difficulty: number;
-  family: string;
-  firstEncountered: string;
-  name: string;
-
-  _id: number;
-  mastery: number;
-  drillReps: number;
-}
