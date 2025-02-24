@@ -2,7 +2,7 @@ name: contact-staff-tutorials
 
 namespace: flowception
 env:
-  APP_VERSION: 1
+  APP_VERSION: 9f3d6ea49efd966ca1642e457c0286825b9b305d
 
 deployment:
   - name: contact-staff-tutorials
