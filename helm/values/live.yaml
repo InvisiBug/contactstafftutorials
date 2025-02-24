@@ -1,0 +1,25 @@
+name: contact-staff-tutorials
+
+namespace: flowception
+env:
+  APP_VERSION: 9f3d6ea49efd966ca1642e457c0286825b9b305d
+
+deployment:
+  - name: contact-staff-tutorials
+    image: invisibug/contact-staff-tutorials
+    ports:
+    - port: 80
+
+ingress:
+  - name: contactstafftutorials.com
+    selector: contact-staff-tutorials
+    path: /.*
+    port: 80
+    host: contactstafftutorials.com
+
+
+service:
+  loadBalancer:
+    - name: contact-staff-tutorials
+      selector: contact-staff-tutorials
+      port: 80
