@@ -1,5 +1,19 @@
 import { useState, useEffect } from "react";
-
+// import { AppSidebar } from "@/components/app-sidebar"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { Separator } from "@/components/ui/separator"
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
 import "./App.css";
 import { loadMoves, loadUserData, enrichMoves } from "./utils";
 
@@ -76,45 +90,81 @@ function App() {
   }, []);
 
   return (
+
+    
     <>
-      <h1>User Saved Moves</h1>
-      <div>
-        {userData?.map((move) => (
-          <div key={move._id}>
-            <p>ID: {move._id}</p>
-            <p>Mastery: {move.mastery}</p>
-            <p>Drill Reps: {move.drillReps}</p>
-          </div>
-        ))}
-      </div>
+      <SidebarProvider>
+        {/* <AppSidebar /> */}
+        <SidebarInset>
+          <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+            <div className="flex items-center gap-2 px-4">
+              <SidebarTrigger className="-ml-1" />
+              <Separator orientation="vertical" className="mr-2 h-4" />
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem className="hidden md:block">
+                    <BreadcrumbLink href="#">
+                      Building Your Application
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator className="hidden md:block" />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+            </div>
+          </header>
+          <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+            <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+              <div className="aspect-video rounded-xl bg-muted/50">
+              <h1>User Saved Moves</h1>
+                <div>
+                  {userData?.map((move) => (
+                    <div key={move._id}>
+                      <p>ID: {move._id}</p>
+                      <p>Mastery: {move.mastery}</p>
+                      <p>Drill Reps: {move.drillReps}</p>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* <h1>All Moves</h1>
+                <div>
+                  {moves?.map((move) => (
+                    <div key={move._id}>
+                      <p>ID: {move._id}</p>
+                      <p>Name: {move.name}</p>
+                      <p>Family: {move.family}</p>
+                      <p>Difficulty: {move.difficulty}</p>
+                      <p>First Encountered: {move.firstEncountered}</p>
+                    </div>
+                  ))}
+                </div> */}
 
-      {/* <h1>All Moves</h1>
-      <div>
-        {moves?.map((move) => (
-          <div key={move._id}>
-            <p>ID: {move._id}</p>
-            <p>Name: {move.name}</p>
-            <p>Family: {move.family}</p>
-            <p>Difficulty: {move.difficulty}</p>
-            <p>First Encountered: {move.firstEncountered}</p>
+                <h1>Merged Data</h1>
+                <div>
+                  {mergedData?.map((data) => (
+                    <div key={data._id}>
+                      <p>ID: {data._id}</p>
+                      <p>Mastery: {data.mastery}</p>
+                      <p>Drill Reps: {data.drillReps}</p>
+                      <p>Name: {data.name}</p>
+                      <p>Family: {data.family}</p>
+                      <p>Difficulty: {data.difficulty}</p>
+                      <p>First Encountered: {data.firstEncountered}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="aspect-video rounded-xl bg-muted/50" />
+              <div className="aspect-video rounded-xl bg-muted/50" />
+            </div>
+            <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
           </div>
-        ))}
-      </div> */}
+        </SidebarInset>
+      </SidebarProvider>
 
-      <h1>Merged Data</h1>
-      <div>
-        {mergedData?.map((data) => (
-          <div key={data._id}>
-            <p>ID: {data._id}</p>
-            <p>Mastery: {data.mastery}</p>
-            <p>Drill Reps: {data.drillReps}</p>
-            <p>Name: {data.name}</p>
-            <p>Family: {data.family}</p>
-            <p>Difficulty: {data.difficulty}</p>
-            <p>First Encountered: {data.firstEncountered}</p>
-          </div>
-        ))}
-      </div>
     </>
   );
 }
