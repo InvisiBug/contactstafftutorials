@@ -50,7 +50,7 @@ function App() {
           "w-screen h-screen bg-gray-500 flex align-middle border-amber-400 border-2"
         }
       >
-        <div className="w-auto border-2 border-red-400 m-auto p-4 flex flex-row justify-center items-center gap-10">
+        <div className="w-auto border-2 border-red-400 m-auto p-4 flex flex-row justify-center items-center gap-10 ">
           {userEnrichedMoves.map((move) => {
             const {
               name,
@@ -63,7 +63,7 @@ function App() {
             } = move;
 
             return (
-              <Card>
+              <Card className={"shadow-gray-600  bg-grey-400 shadow-md"}>
                 <CardHeader>
                   <CardTitle>{name}</CardTitle>
                   <CardContent>
@@ -79,7 +79,7 @@ function App() {
                       <li>Reps: {drillReps}</li>
                       <img
                         src={gifs.find((gif) => gif.includes(camelName(name)))}
-                        className={"w-50 h-30"}
+                        className={"w-50 h-30 rounded-2xl"}
                       ></img>
                     </ul>
                   </CardContent>

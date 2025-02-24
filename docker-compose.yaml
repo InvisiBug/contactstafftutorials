@@ -1,0 +1,9 @@
+version: "3.1"
+
+services:
+  contactStaffTutorials:
+    container_name: contactStaffTutorials
+    image: contactStaffTutorials
+    build:
+      context: .
+      dockerfile: dockerfile

@@ -1,0 +1,19 @@
+FROM node:20-alpine as builder
+
+WORKDIR /app
+COPY . .
+
+# ENV PATH /app/node_modules.bin:$PATH
+
+ENV VITE_API https://test.api.kavanet.io/
+ENV VITE_SOCKET https://test.socket.kavanet.io/
+
+
+RUN npm install
+RUN npm run build
+
+FROM --platform=linux/arm64 arm64v8/nginx
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx.conf  /etc/nginx/conf.d
+EXPOSE 3000
+CMD ["nginx", "-g", "daemon off;"]
