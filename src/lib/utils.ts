@@ -1,5 +1,10 @@
 import { Move, Moves, UserMoves, EnrichedMove } from "./types";
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
 
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
 export const loadUserData = async () => {
   const userData: UserMoves = await import(`./users/user1.json`).then((res) =>
     JSON.parse(JSON.stringify(res.default))
@@ -89,3 +94,4 @@ export const enrichMoves = ({
 
   return enrichedMoves;
 };
+
